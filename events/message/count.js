@@ -30,7 +30,7 @@ module.exports = {
             } else if (user.id !== client.user.id) {
                 message.react('🔴')
                 countingchannel.send(`${user} wrong number, game restarts from 0`).catch(console.error)
-                
+                await countSchema.findOneAndUpdate({guildId: message.guild.id, currentnum: 0})
                 if (data.currentnum > data.topnum) {
                     await countSchema.findOneAndUpdate({guildId: message.guild.id, topnum: data.currentnum})
                     countingchannel.setTopic(`🔢 Current Record: ${data.topnum}`)
