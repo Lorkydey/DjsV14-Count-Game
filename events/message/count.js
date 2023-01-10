@@ -24,14 +24,16 @@ module.exports = {
             if (Number(message.content) === data.currentnum + 1) {
                 message.react('🟢')
                 await countSchema.findOneAndUpdate({guildId: message.guild.id, currentnum: data.currentnum+1})
-        
+                if (data.currentnum === data.topnum) {
+                    countingchannel.send(`**New record !**`).catch(console.error)
+                }
             } else if (user.id !== client.user.id) {
                 message.react('🔴')
-                countingchannel.send(`${user} wrong number.`).catch(console.error)
+                countingchannel.send(`${user} wrong number, game restarts from 0`).catch(console.error)
                 
                 if (data.currentnum > data.topnum) {
                     await countSchema.findOneAndUpdate({guildId: message.guild.id, topnum: data.currentnum})
-                    countingchannel.setTopic(`Topnum: ${data.topnum}`)
+                    countingchannel.setTopic(`🔢 Current Record: ${data.topnum}`)
                 }
                 
             }
